@@ -10,29 +10,34 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME=libftprintf.a
-
-SRCS= main.c printf.c
-
-OBJECTS= main.o printf.o
-
-INCLUDES= libftprintf.h
+NAME = libftprintf.a
+LIBFT = libft.a
+LIBFT_PATH = libft/
+INCLUDE = ft_printf.h
+SRC = ft_printf.c 
+OBJ = $(SRC.%.c=%.o)
 
 all: $(NAME)
 
-$(NAME): $(SRCS) libftprintf.h
-	@gcc -Wall -Wextra -Werror -I$(INCLUDES) -c $(TSTSRCS)
-	@ar rc $(NAME) $(OBJECTS)
+$(NAME):
+	@make -C $(LIBTF_PATH)
+	@cp $(LIBFT_PATH) $(LIBFT)
+	@mv $(LIBFT) $(NAME)
+	@gcc -Wall -Werror -Wextra -I$(INCLUDE) -c $(SRC)
+	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-	@echo "Library compiled"
+	@echo "Compiled"
 
 clean:
-	@/bin/rm -f $(OBJECTS)
-	@echo "Cleaned!"
-fclean: clean
-	@/bin/rm -f $(NAME)
+	@rm -f $(OBJ)
+	@make -C $(LIBFT_PATH) clean
+	@echo "cleaned"
 
-pf:	 
-	@gcc main.c -I$(INCLUDES)  $(TSTSRCS) -L /Users/hvuorine/Desktop/42/printf -libftprintf.a
+fclean: clean
+	@rm -f $(NAME)
+	@make -C $(LIBFT_PATH) fclean
 
 re: fclean all
+
+.PHONY: all clean fclean re
+
